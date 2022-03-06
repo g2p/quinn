@@ -358,7 +358,7 @@ impl StreamsState {
             // a little by dropping the frame if we specifically know the stream's been reset by the
             // peer, but we discard that information as soon as the application consumes it, so it
             // can't be relied upon regardless.
-            trace!(stream = %frame.id, "STOP_SENDING");
+            trace!(stream = %frame.id, "STOP_SENDING {}", frame.error_code);
             frame.encode(buf);
             retransmits.get_or_create().stop_sending.push(frame);
             stats.stop_sending += 1;
