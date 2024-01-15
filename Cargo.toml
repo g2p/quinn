@@ -10,4 +10,4 @@ debug = true
 debug = true
 
 [patch."crates-io"]
-rustls = { git = "https://github.com/rustls/rustls", branch = "quinn-support" }
+#rustls = { git = "https://github.com/rustls/rustls", branch = "quinn-support" }

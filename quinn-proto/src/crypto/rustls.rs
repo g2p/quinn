@@ -334,10 +334,14 @@ fn to_vec(params: &TransportParameters) -> Vec<u8> {
 }
 
 pub(crate) fn initial_keys(version: Version, dst_cid: &ConnectionId, side: Side) -> Keys {
+    let initial = rustls::crypto::ring::cipher_suite::TLS13_AES_128_GCM_SHA256
+        .tls13()
+        .unwrap();
+
     let keys = rustls::quic::Keys::initial(
         version,
-        INITIAL,
-        INITIAL.quic.unwrap(),
+        initial,
+        initial.quic.unwrap(),
         dst_cid,
         side.into(),
     );
@@ -353,11 +357,6 @@ pub(crate) fn initial_keys(version: Version, dst_cid: &ConnectionId, side: Side)
         },
     }
 }
-
-static INITIAL: &'static Tls13CipherSuite =
-    rustls::crypto::ring::cipher_suite::TLS13_AES_128_GCM_SHA256
-        .tls13()
-        .unwrap();
 
 impl crypto::PacketKey for Box<dyn PacketKey> {
     fn encrypt(&self, packet: u64, buf: &mut [u8], header_len: usize) {
